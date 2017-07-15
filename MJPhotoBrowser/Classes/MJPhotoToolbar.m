@@ -1,23 +1,25 @@
 //
-//  IMMJPhotoToolbar.m
+//  MJPhotoToolbar.m
 //  FingerNews
 //
 //  Created by mj on 13-9-24.
 //  Copyright (c) 2013年 itcast. All rights reserved.
 //
 
-#import "IMMJPhoto.h"
-#import "IMMJPhotoToolbar.h"
+#import "MJPhotoToolbar.h"
+#import "MJPhoto.h"
 
-@interface IMMJPhotoToolbar () {
-    /// 显示页码
+@interface MJPhotoToolbar()
+{
+    // 显示页码
     UILabel *_indexLabel;
 }
 @end
 
-@implementation IMMJPhotoToolbar
+@implementation MJPhotoToolbar
 
-- (id)initWithFrame:(CGRect)frame {
+- (id)initWithFrame:(CGRect)frame
+{
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
@@ -27,7 +29,7 @@
 
 - (void)setPhotos:(NSArray *)photos {
     _photos = photos;
-
+    
     _indexLabel = [[UILabel alloc] init];
     _indexLabel.font = [UIFont boldSystemFontOfSize:20];
     _indexLabel.frame = self.bounds;
@@ -40,7 +42,7 @@
 
 - (void)setCurrentPhotoIndex:(NSUInteger)currentPhotoIndex {
     _currentPhotoIndex = currentPhotoIndex;
-
+    
     // 更新页码
     _indexLabel.text = [NSString stringWithFormat:@"%d / %d", (int)_currentPhotoIndex + 1, (int)_photos.count];
 }

@@ -1,5 +1,5 @@
 //
-//  IMMJPhotoLoadingView.h
+//  MJPhotoLoadingView.h
 //
 //  Created by mj on 13-3-4.
 //  Copyright (c) 2013年 itcast. All rights reserved.
@@ -9,12 +9,12 @@
 
 #define kMinProgress 0.0001
 
-@class IMMJPhotoBrowser;
-@class IMMJPhoto;
+@class MJPhotoBrowser;
+@class MJPhoto;
 
-@interface IMMJPhotoLoadingView : UIView
+@interface MJPhotoLoadingView : UIView
+@property (nonatomic) float progress;
 
 - (void)showLoading;
 - (void)showFailure;
-
 @end

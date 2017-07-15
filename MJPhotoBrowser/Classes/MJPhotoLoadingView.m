@@ -1,23 +1,23 @@
 //
-//  IMMJPhotoLoadingView.m
+//  MJPhotoLoadingView.m
 //
 //  Created by mj on 13-3-4.
 //  Copyright (c) 2013年 itcast. All rights reserved.
 //
 
-#import "IMMJPhotoLoadingView.h"
+#import "MJPhotoLoadingView.h"
 
-#import "IMMJPhoto.h"
-#import "IMMJPhotoBrowser.h"
+#import "MJPhotoBrowser.h"
 #import <QuartzCore/QuartzCore.h>
 
-@interface IMMJPhotoLoadingView () {
+@interface MJPhotoLoadingView ()
+{
     UIActivityIndicatorView *_progressView;
 }
 
 @end
 
-@implementation IMMJPhotoLoadingView
+@implementation MJPhotoLoadingView
 
 - (void)setFrame:(CGRect)frame {
     [super setFrame:[UIScreen mainScreen].bounds];
@@ -35,7 +35,7 @@
         _progressView.center = self.center;
     }
     [self addSubview:_progressView];
-
+    
     [_progressView startAnimating];
 }
 

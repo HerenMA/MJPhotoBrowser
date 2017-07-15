@@ -1,5 +1,5 @@
 //
-//  IMMJPhotoToolbar.h
+//  MJPhotoToolbar.h
 //  FingerNews
 //
 //  Created by mj on 13-9-24.
@@ -8,11 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
-@interface IMMJPhotoToolbar : UIView
+@interface MJPhotoToolbar : UIView
 
 /// 所有的图片对象
-@property (strong, nonatomic) NSArray *photos;
+@property (nonatomic, strong) NSArray *photos;
 /// 当前展示的图片索引
-@property (assign, nonatomic) NSUInteger currentPhotoIndex;
+@property (nonatomic, assign) NSUInteger currentPhotoIndex;
 
 @end

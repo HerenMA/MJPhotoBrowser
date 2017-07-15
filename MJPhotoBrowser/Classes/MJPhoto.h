@@ -1,17 +1,18 @@
 //
-//  IMMJPhoto.h
+//  MJPhoto.h
 //
 //  Created by mj on 13-3-4.
 //  Copyright (c) 2013年 itcast. All rights reserved.
 
+#import <UIKit/UIKit.h>
 #import <Foundation/Foundation.h>
 #import <QuartzCore/QuartzCore.h>
-#import <UIKit/UIKit.h>
 
-#import "UIImageView+YYWebImage.h"
+#import <YYWebImage/YYWebImage.h>
 
-@interface IMMJPhoto : NSObject
+@interface MJPhoto : NSObject
 
+/// 图片URL
 @property (strong, nonatomic) NSURL *url;
 /// 完整的图片
 @property (strong, nonatomic) UIImage *image;

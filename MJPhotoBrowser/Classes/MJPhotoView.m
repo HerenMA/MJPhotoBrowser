@@ -1,37 +1,36 @@
 //
-//  IMMJPhotoView.m
+//  MJZoomingScrollView.m
 //
 //  Created by mj on 13-3-4.
 //  Copyright (c) 2013年 itcast. All rights reserved.
 //
 
-#import "IMMJPhoto.h"
-#import "IMMJPhotoLoadingView.h"
-#import "IMMJPhotoView.h"
+#import "MJPhotoView.h"
+#import "MJPhoto.h"
+#import "MJPhotoLoadingView.h"
 #import <QuartzCore/QuartzCore.h>
 
 #define ESWeak(var, weakVar) __weak __typeof(&*var) weakVar = var
 #define ESStrong_DoNotCheckNil(weakVar, _var) __typeof(&*weakVar) _var = weakVar
-#define ESStrong(weakVar, _var)                                                                                                                                                                                                                                                                            \
-    ESStrong_DoNotCheckNil(weakVar, _var);                                                                                                                                                                                                                                                                 \
-    if (!_var) return;
+#define ESStrong(weakVar, _var) ESStrong_DoNotCheckNil(weakVar, _var); if (!_var) return;
 
 #define ESWeak_(var) ESWeak(var, weak_##var);
 #define ESStrong_(var) ESStrong(weak_##var, _##var);
 
 /** defines a weak `self` named `__weakSelf` */
-#define ESWeakSelf ESWeak(self, __weakSelf);
+#define ESWeakSelf      ESWeak(self, __weakSelf);
 /** defines a strong `self` named `_self` from `__weakSelf` */
-#define ESStrongSelf ESStrong(__weakSelf, _self);
+#define ESStrongSelf    ESStrong(__weakSelf, _self);
 
-@interface IMMJPhotoView () {
+@interface MJPhotoView ()
+{
     BOOL _zoomByDoubleTap;
     UIImageView *_imageView;
-    IMMJPhotoLoadingView *_photoLoadingView;
+    MJPhotoLoadingView *_photoLoadingView;
 }
 @end
 
-@implementation IMMJPhotoView
+@implementation MJPhotoView
 
 - (id)initWithFrame:(CGRect)frame {
     if ((self = [super initWithFrame:frame])) {
@@ -41,28 +40,28 @@
         _imageView.backgroundColor = [UIColor blackColor];
         _imageView.contentMode = UIViewContentModeScaleAspectFit;
         [self addSubview:_imageView];
-
+        
         // 进度条
-        _photoLoadingView = [[IMMJPhotoLoadingView alloc] init];
+        _photoLoadingView = [[MJPhotoLoadingView alloc] init];
         [self addSubview:_photoLoadingView];
-
+        
         // 属性
         self.delegate = self;
         self.showsHorizontalScrollIndicator = NO;
         self.showsVerticalScrollIndicator = NO;
         self.decelerationRate = UIScrollViewDecelerationRateFast;
         self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-
+        
         // 监听点击
         UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleSingleTap:)];
         singleTap.delaysTouchesBegan = YES;
         singleTap.numberOfTapsRequired = 1;
         [self addGestureRecognizer:singleTap];
-
+        
         UITapGestureRecognizer *doubleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleDoubleTap:)];
         doubleTap.numberOfTapsRequired = 2;
         [self addGestureRecognizer:doubleTap];
-
+        
         [singleTap requireGestureRecognizerToFail:doubleTap];
     }
     return self;
@@ -75,16 +74,16 @@
 
 
 #pragma mark - photoSetter
-- (void)setPhoto:(IMMJPhoto *)photo {
+- (void)setPhoto:(MJPhoto *)photo {
     _photo = photo;
-
+    
     [self showImage];
 }
 
 #pragma mark 显示图片
 - (void)showImage {
     [self photoStartLoad];
-
+    
     [self adjustFrame];
 }
 
@@ -92,15 +91,15 @@
 - (void)photoStartLoad {
     if (_photo.image) {
         [_photoLoadingView showFailure];
-
+        
         _imageView.image = _photo.image;
         self.scrollEnabled = YES;
     } else {
         [_photoLoadingView showLoading];
-
+        
         _imageView.image = _photo.placeholder;
         self.scrollEnabled = NO;
-
+        
         ESWeakSelf;
         ESWeak_(_imageView);
         [_imageView yy_setImageWithURL:_photo.url
@@ -121,12 +120,12 @@
         self.scrollEnabled = YES;
         _photo.image = image;
         [_photoLoadingView showFailure];
-
+        
         if ([self.photoViewDelegate respondsToSelector:@selector(photoViewImageFinishLoad:)]) {
             [self.photoViewDelegate photoViewImageFinishLoad:self];
         }
     }
-
+    
     // 设置缩放比例
     [self adjustFrame];
 }
@@ -135,17 +134,17 @@
 #pragma mark 调整frame
 - (void)adjustFrame {
     if (_imageView.image == nil) return;
-
+    
     // 基本尺寸参数
     CGFloat boundsWidth = self.bounds.size.width;
     CGFloat boundsHeight = self.bounds.size.height;
     CGFloat imageWidth = _imageView.image.size.width;
     CGFloat imageHeight = _imageView.image.size.height;
-
+    
     // 设置伸缩比例
     CGFloat imageScale = boundsWidth / imageWidth;
     CGFloat minScale = MIN(1.0, imageScale);
-
+    
     CGFloat maxScale = 5.0;
     if ([UIScreen instancesRespondToSelector:@selector(scale)]) {
         maxScale = maxScale / [[UIScreen mainScreen] scale];
@@ -153,9 +152,9 @@
     self.maximumZoomScale = maxScale;
     self.minimumZoomScale = minScale;
     self.zoomScale = minScale;
-
+    
     CGRect imageFrame = CGRectMake(0, MAX(0, (boundsHeight - imageHeight * imageScale) / 2), boundsWidth, imageHeight * imageScale);
-
+    
     self.contentSize = CGSizeMake(CGRectGetWidth(imageFrame), CGRectGetHeight(imageFrame));
     _imageView.frame = imageFrame;
 }
@@ -197,7 +196,7 @@
 - (void)handleSingleTap:(UITapGestureRecognizer *)tap {
     // 移除进度条
     [_photoLoadingView removeFromSuperview];
-
+    
     // 通知代理
     if ([self.photoViewDelegate respondsToSelector:@selector(photoViewSingleTap:)]) {
         [self.photoViewDelegate photoViewSingleTap:self];
@@ -211,7 +210,7 @@
  */
 - (void)handleDoubleTap:(UITapGestureRecognizer *)tap {
     _zoomByDoubleTap = YES;
-
+    
     if (self.zoomScale == self.maximumZoomScale) {
         [self setZoomScale:self.minimumZoomScale animated:YES];
     } else {
@@ -226,4 +225,5 @@
     // 取消请求
     [_imageView yy_setImageWithURL:[NSURL URLWithString:@"file:///abc"] options:kNilOptions];
 }
+
 @end

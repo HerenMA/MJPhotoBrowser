@@ -1,11 +1,11 @@
 //
-//  IMMJPhoto.m
+//  MJPhoto.m
 //
 //  Created by mj on 13-3-4.
 //  Copyright (c) 2013年 itcast. All rights reserved.
 
-#import "IMMJPhoto.h"
+#import "MJPhoto.h"
 
-@implementation IMMJPhoto
+@implementation MJPhoto
 
 @end
