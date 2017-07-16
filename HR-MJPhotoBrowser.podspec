@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
     s.name         = "MJPhotoBrowser"
     s.summary      = "The easiest lightest way to use PhotoBrowser, enhanced by Sunnyyoung."
-    s.version      = "1.0.3"
+    s.version      = "1.0.2"
     s.license      = { :type => "MIT", :file => "LICENSE" }
     s.authors      = { "MONO" => "yinjianjun1@herenit.com" }
     s.homepage     = "https://github.com/herenMA/MJPhotoBrowser"
