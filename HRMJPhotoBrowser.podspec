@@ -1,5 +1,5 @@
 Pod::Spec.new do |s|
-    s.name         = "HR-MJPhotoBrowser"
+    s.name         = "HRMJPhotoBrowser"
     s.summary      = "The easiest lightest way to use PhotoBrowser, enhanced by Sunnyyoung."
     s.version      = "1.0.2"
     s.license      = { :type => "MIT", :file => "LICENSE" }
