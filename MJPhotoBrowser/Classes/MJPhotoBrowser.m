@@ -9,6 +9,15 @@
 #import "MJPhotoView.h"
 #import "MJPhotoToolbar.h"
 
+/// iPhone X
+#define kiPhoneX ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(1125.f, 2436.f), [[UIScreen mainScreen] currentMode].size) : NO)
+/// iPhone XR
+#define kiPhoneXR ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(828.f, 1792.f), [[UIScreen mainScreen] currentMode].size) : NO)
+/// iPhone XS Max
+#define kiPhoneXSMax ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(1242.f, 2688.f), [[UIScreen mainScreen] currentMode].size) : NO)
+/// Tabbar safe bottom margin.
+#define kTabbarSafeBottomMargin (kiPhoneX || kiPhoneXR || kiPhoneXSMax ? 34.f : 0.f)
+
 #define kPadding 10
 #define kPhotoViewTagOffset 1000
 #define kPhotoViewIndex(photoView) ([photoView tag] - kPhotoViewTagOffset)
@@ -62,7 +71,7 @@
 - (MJPhotoToolbar *)toolbar{
     if (!_toolbar) {
         CGFloat barHeight = 49;
-        CGFloat barY = self.view.frame.size.height - barHeight;
+        CGFloat barY = self.view.frame.size.height - (barHeight + kTabbarSafeBottomMargin);
         _toolbar = [[MJPhotoToolbar alloc] init];
         _toolbar.frame = CGRectMake(0, barY, self.view.frame.size.width, barHeight);
         _toolbar.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
