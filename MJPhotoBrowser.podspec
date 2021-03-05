@@ -11,9 +11,6 @@ Pod::Spec.new do |s|
     s.ios.deployment_target = "9.0"
     s.frameworks = "Foundation", "UIKit", "QuartzCore"
     s.source_files = "MJPhotoBrowser/Classes/*.{h,m}"
-
-    s.pod_target_xcconfig = { 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64' }
-    s.user_target_xcconfig = { 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64' }
     
     s.dependency 'YYWebImage'
 end
