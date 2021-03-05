@@ -1,10 +1,10 @@
 Pod::Spec.new do |s|
-    s.name         = "HRMJPhotoBrowser"
+    s.name         = "MJPhotoBrowser"
     s.summary      = "The easiest lightest way to use PhotoBrowser, enhanced by Sunnyyoung."
     s.version      = "1.0.3"
     s.license      = { :type => "MIT", :file => "LICENSE" }
-    s.authors      = { "MONO" => "yinjianjun1@herenit.com" }
-    s.homepage     = "https://github.com/HerenMA/MJPhotoBrowser"
+    s.authors      = { 'azxfire' => 'https://github.com/azxfire' }
+    s.homepage     = "https://github.com/Sunnyyoung/MJPhotoBrowser"
     s.source       = { :git => "https://github.com/HerenMA/MJPhotoBrowser.git", :tag => s.version }
     s.requires_arc = true
     s.platform     = :ios, "9.0"
@@ -12,5 +12,5 @@ Pod::Spec.new do |s|
     s.frameworks = "Foundation", "UIKit", "QuartzCore"
     s.source_files = "MJPhotoBrowser/Classes/*.{h,m}"
 
-    s.dependency 'YYWebImage', '~> 1.0.6'
+    s.dependency 'YYWebImage'
 end
