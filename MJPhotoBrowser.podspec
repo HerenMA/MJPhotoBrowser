@@ -10,7 +10,7 @@ Pod::Spec.new do |s|
     s.platform     = :ios, "9.0"
     s.ios.deployment_target = "9.0"
     s.frameworks = "Foundation", "UIKit", "QuartzCore"
-    s.source_files = "MJPhotoBrowser/Classes/*.{h,m}"
+    s.source_files = "MJPhotoBrowser/*.{h,m}"
     
     s.dependency 'YYWebImage'
 end
