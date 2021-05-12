@@ -114,7 +114,8 @@
                                     [_self photoDidFinishLoadWithImage:image];
                                 }];
         } else {
-            _imageView.image = [UIImage imageWithContentsOfFile:_photo.url.absoluteString];
+            UIImage *image = [UIImage imageWithContentsOfFile:_photo.url.absoluteString];
+            [self photoDidFinishLoadWithImage:image];
         }
     }
 }
