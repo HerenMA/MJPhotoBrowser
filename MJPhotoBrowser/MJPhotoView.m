@@ -102,15 +102,20 @@
         
         ESWeakSelf;
         ESWeak_(_imageView);
-        [_imageView yy_setImageWithURL:_photo.url
-                           placeholder:_photo.placeholder
-                               options:kNilOptions
-                            completion:^(UIImage *_Nullable image, NSURL *_Nonnull url, YYWebImageFromType from, YYWebImageStage stage, NSError *_Nullable error) {
-                                ESStrongSelf;
-                                ESStrong_(_imageView);
-                                _imageView.image = image;
-                                [_self photoDidFinishLoadWithImage:image];
-                            }];
+        NSString *scheme = [_photo.url scheme];
+        if ([scheme.lowercaseString isEqualToString:@"http"] || [scheme.lowercaseString isEqualToString:@"https"]) {
+            [_imageView yy_setImageWithURL:_photo.url
+                               placeholder:_photo.placeholder
+                                   options:kNilOptions
+                                completion:^(UIImage *_Nullable image, NSURL *_Nonnull url, YYWebImageFromType from, YYWebImageStage stage, NSError *_Nullable error) {
+                                    ESStrongSelf;
+                                    ESStrong_(_imageView);
+                                    _imageView.image = image;
+                                    [_self photoDidFinishLoadWithImage:image];
+                                }];
+        } else {
+            _imageView.image = [UIImage imageWithContentsOfFile:_photo.url.absoluteString];
+        }
     }
 }
 

@@ -9,14 +9,10 @@
 #import "MJPhotoView.h"
 #import "MJPhotoToolbar.h"
 
-/// iPhone X
-#define kiPhoneX ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(1125.f, 2436.f), [[UIScreen mainScreen] currentMode].size) : NO)
-/// iPhone XR
-#define kiPhoneXR ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(828.f, 1792.f), [[UIScreen mainScreen] currentMode].size) : NO)
-/// iPhone XS Max
-#define kiPhoneXSMax ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(1242.f, 2688.f), [[UIScreen mainScreen] currentMode].size) : NO)
+/// iPhone X / iPhone XS / iPhone XR / iPhone 11 / iPhone 12
+#define kiPhoneX (@available(iOS 11.0, *) ? [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bottom > 0.f ? YES : NO : NO)
 /// Tabbar safe bottom margin.
-#define kTabbarSafeBottomMargin (kiPhoneX || kiPhoneXR || kiPhoneXSMax ? 34.f : 0.f)
+#define kTabbarSafeBottomMargin (kiPhoneX ? 34.f : 0.f)
 
 #define kPadding 10
 #define kPhotoViewTagOffset 1000
