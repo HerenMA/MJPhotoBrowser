@@ -115,6 +115,7 @@
                                 }];
         } else {
             UIImage *image = [UIImage imageWithContentsOfFile:_photo.url.absoluteString];
+            _imageView.image = image;
             [self photoDidFinishLoadWithImage:image];
         }
     }
