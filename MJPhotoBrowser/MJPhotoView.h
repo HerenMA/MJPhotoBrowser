@@ -12,6 +12,7 @@
 @protocol MJPhotoViewDelegate <NSObject>
 - (void)photoViewImageFinishLoad:(MJPhotoView *)photoView;
 - (void)photoViewSingleTap:(MJPhotoView *)photoView;
+- (void)photoViewPlayVideo:(MJPhotoView *)photoView;
 @end
 
 @interface MJPhotoView : UIScrollView <UIScrollViewDelegate>

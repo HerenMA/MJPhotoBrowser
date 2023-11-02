@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
     s.name         = "MJPhotoBrowser"
     s.summary      = "The easiest lightest way to use PhotoBrowser, enhanced by Sunnyyoung."
-    s.version      = "1.0.3"
+    s.version      = "1.0.4"
     s.license      = { :type => "MIT", :file => "LICENSE" }
     s.authors      = { 'azxfire' => 'https://github.com/azxfire' }
     s.homepage     = "https://github.com/Sunnyyoung/MJPhotoBrowser"
@@ -20,7 +20,7 @@ Pod::Spec.new do |s|
       ss.ios.vendored_framework   = 'ios/MJPhotoBrowser.framework'
     end
     
-    s.frameworks = "Foundation", "UIKit", "QuartzCore"
+    s.frameworks = "Foundation", "UIKit", "QuartzCore", "AVFoundation", "AVKit"
         
     s.dependency 'YYWebImage'
     

@@ -26,10 +26,12 @@ static NSString * const reuseIdentifier = @"Cell";
         _imageURLArray = @[@"https://alifei05.cfp.cn/creative/vcg/veer/612/veer-147473424.jpg",
                            @"https://tenfei01.cfp.cn/creative/vcg/veer/612/veer-152656515.jpg",
                            @"https://alifei02.cfp.cn/creative/vcg/veer/612/veer-149626661.jpg",
+                           @"https://nim-nosdn.netease.im/MTY3NzYzMjU=/bmltYV82MzU0MTIxNjU4M18xNjkzNTU0Mjk1NDUzXzlkZTYyOTU5LTg5YWYtNDAxOS05MzM0LTIyNzFmYjg0Y2Y2MQ==?vframe=1",
                            @"https://alifei02.cfp.cn/creative/vcg/veer/612/veer-153686131.jpg",
                            @"https://alifei05.cfp.cn/creative/vcg/veer/612/veer-147500854.jpg",
                            @"https://alifei01.cfp.cn/creative/vcg/veer/612/veer-152216760.jpg",
                            @"https://alifei02.cfp.cn/creative/vcg/veer/612/veer-151524091.jpg",
+                           @"https://nim-nosdn.netease.im/MTY3NzYzMjU=/bmltYV82MzU0MTIxNjU4M18xNjkzNTU0Mjk1NDUzXzFjMWMzOTAzLWJkOWQtNDYyYi05OWJmLTU1ZTY5ZTg5ZTVhMw==?vframe=1",
                            @"https://tenfei03.cfp.cn/creative/vcg/veer/612/veer-149494937.jpg",
                            @"https://tenfei02.cfp.cn/creative/vcg/veer/612/veer-152352866.jpg"];
     }
@@ -65,6 +67,11 @@ static NSString * const reuseIdentifier = @"Cell";
             MJPhoto *photo = [[MJPhoto alloc] init];
             photo.url = [NSURL URLWithString:imageURL];
             photo.image = ((CollectionViewCell *)[collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForRow:row inSection:0]]).imageView.image;
+            if (row == 3) {
+                photo.videoUrl = [NSURL URLWithString:@"https://nim-nosdn.netease.im/MTY3NzYzMjU=/bmltYV82MzU0MTIxNjU4M18xNjkzNTU0Mjk1NDUzXzlkZTYyOTU5LTg5YWYtNDAxOS05MzM0LTIyNzFmYjg0Y2Y2MQ=="];
+            } else if (row == 8) {
+                photo.videoUrl = [NSURL URLWithString:@"https://nim-nosdn.netease.im/MTY3NzYzMjU=/bmltYV82MzU0MTIxNjU4M18xNjkzNTU0Mjk1NDUzXzFjMWMzOTAzLWJkOWQtNDYyYi05OWJmLTU1ZTY5ZTg5ZTVhMw=="];
+            }
             photo;
         });
         row++;
