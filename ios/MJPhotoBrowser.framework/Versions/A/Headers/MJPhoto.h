@@ -14,6 +14,8 @@
 
 /// 图片URL
 @property (strong, nonatomic) NSURL *url;
+/// 视频URL
+@property (strong, nonatomic) NSURL *videoUrl;
 /// 完整的图片
 @property (strong, nonatomic) UIImage *image;
 /// 默认图片
