@@ -1,4 +1,4 @@
-source 'https://github.com/HerenMA/Specs.git'
+source 'git@github.com:HerenMA/Specs.git'
 source 'https://cdn.cocoapods.org/'
 
 platform :ios, '9.0'
@@ -6,4 +6,5 @@ inhibit_all_warnings!
 
 target 'MJPhotoBrowser' do
   pod 'YYWebImage', '~> 1.0.5'
+  pod 'SVProgressHUD/Framework', '~> 2.1.2'
 end
