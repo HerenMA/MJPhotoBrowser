@@ -20,7 +20,7 @@ Pod::Spec.new do |s|
       ss.ios.vendored_framework   = 'ios/MJPhotoBrowser.framework'
     end
     
-    s.frameworks = "Foundation", "UIKit", "QuartzCore", "AVFoundation", "AVKit"
+    s.frameworks = "Foundation", "UIKit", "QuartzCore", "AVFoundation", "AVKit", "Photos"
         
     s.dependency 'YYWebImage'
     s.dependency 'SVProgressHUD/Framework'
