@@ -7,7 +7,11 @@
 //
 
 #import <Photos/Photos.h>
-#import <SVProgressHUD/SVProgressHUD.h>
+#if __has_include(<SVProgressHUD/SVProgressHUD.h>)
+    #import <SVProgressHUD/SVProgressHUD.h>
+#else
+    #import "SVProgressHUD.h"
+#endif
 
 #import "MJPhotoToolbar.h"
 #import "MJPhoto.h"
