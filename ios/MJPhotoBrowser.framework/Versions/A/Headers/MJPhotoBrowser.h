@@ -8,7 +8,7 @@
 
 @protocol MJPhotoBrowserDelegate;
 
-typedef void (^MJPhotoBrowserDismiss)();
+typedef void (^MJPhotoBrowserDismiss)(void);
 
 @interface MJPhotoBrowser : NSObject <UIScrollViewDelegate>
 
