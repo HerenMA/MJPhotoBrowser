@@ -23,5 +23,5 @@ Pod::Spec.new do |s|
     s.frameworks = "Foundation", "UIKit", "QuartzCore", "AVFoundation", "AVKit", "Photos"
         
     s.dependency 'YYWebImage'
-    s.dependency 'SVProgressHUD/Framework'
+    s.dependency 'Toast'
 end

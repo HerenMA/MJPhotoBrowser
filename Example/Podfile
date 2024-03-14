@@ -6,5 +6,5 @@ inhibit_all_warnings!
 
 target 'MJPhotoBrowser' do
   pod 'YYWebImage', '~> 1.0.5'
-  pod 'SVProgressHUD/Framework', '~> 2.1.2'
+  pod 'Toast', '~> 4.0.0'
 end

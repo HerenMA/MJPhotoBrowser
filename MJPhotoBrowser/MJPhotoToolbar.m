@@ -7,26 +7,26 @@
 //
 
 #import <Photos/Photos.h>
-#if __has_include(<SVProgressHUD/SVProgressHUD.h>)
-    #import <SVProgressHUD/SVProgressHUD.h>
+#if __has_include(<Toast/Toast.h>)
+    #import <Toast/Toast.h>
 #else
-    #import "SVProgressHUD.h"
+    #import "Toast.h"
 #endif
 
 #import "MJPhotoToolbar.h"
 #import "MJPhoto.h"
 
-#define ESWeak(var, weakVar) __weak __typeof(&*var) weakVar = var
+#define ESWeak(var, weakVar)                  __weak __typeof(&*var) weakVar = var
 #define ESStrong_DoNotCheckNil(weakVar, _var) __typeof(&*weakVar) _var = weakVar
-#define ESStrong(weakVar, _var) ESStrong_DoNotCheckNil(weakVar, _var); if (!_var) return;
+#define ESStrong(weakVar, _var)               ESStrong_DoNotCheckNil(weakVar, _var); if (!_var) return;
 
-#define ESWeak_(var) ESWeak(var, weak_##var);
-#define ESStrong_(var) ESStrong(weak_##var, _##var);
+#define ESWeak_(var)                          ESWeak(var, weak_ ## var);
+#define ESStrong_(var)                        ESStrong(weak_ ## var, _ ## var);
 
 /** defines a weak `self` named `__weakSelf` */
-#define ESWeakSelf      ESWeak(self, __weakSelf);
+#define ESWeakSelf   ESWeak(self, __weakSelf);
 /** defines a strong `self` named `_self` from `__weakSelf` */
-#define ESStrongSelf    ESStrong(__weakSelf, _self);
+#define ESStrongSelf ESStrong(__weakSelf, _self);
 
 @interface MJPhotoToolbar () {
     // 显示页码
@@ -44,7 +44,6 @@
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
-        [SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeClear];
     }
     return self;
 }
@@ -64,11 +63,14 @@
     // 保存
     _saveButton = [[UIButton alloc] init];
     _saveButton.titleLabel.font = [UIFont boldSystemFontOfSize:16.0];
+    _saveButton.titleLabel.adjustsFontSizeToFitWidth = YES;
     [_saveButton setTitleColor:UIColor.whiteColor forState:UIControlStateNormal];
-    [_saveButton setTitle:@" 保存 " forState:UIControlStateNormal];
+    [_saveButton setTitleColor:UIColor.lightGrayColor forState:UIControlStateDisabled];
+    [_saveButton setTitle:@"   保存   " forState:UIControlStateNormal];
+    [_saveButton setTitle:@"保存中..." forState:UIControlStateDisabled];
     [_saveButton addTarget:self action:@selector(saveClick:) forControlEvents:UIControlEventTouchUpInside];
     [_saveButton sizeToFit];
-    _saveButton.frame = CGRectMake(CGRectGetWidth(self.frame) - (CGRectGetWidth(_saveButton.frame) + 10), (CGRectGetHeight(self.frame) - CGRectGetHeight(_saveButton.frame)) / 2, CGRectGetWidth(_saveButton.frame), CGRectGetHeight(_saveButton.frame));
+    _saveButton.frame = CGRectMake(CGRectGetWidth(self.frame) - (CGRectGetWidth(_saveButton.frame) + 5), (CGRectGetHeight(self.frame) - CGRectGetHeight(_saveButton.frame)) / 2, CGRectGetWidth(_saveButton.frame), CGRectGetHeight(_saveButton.frame));
     [self addSubview:_saveButton];
 }
 
@@ -110,26 +112,30 @@
 ///   - isVideo: <#isVideo description#>
 - (void)downloadTask:(NSURL *)url isVideo:(BOOL)isVideo {
     ESWeakSelf;
+    ESWeak_(_saveButton);
+    _saveButton.enabled = NO;
 
-    [SVProgressHUD showWithStatus:@"请稍候..."];
     _downloadTask = [[NSURLSession sharedSession] dataTaskWithURL:url completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
                          ESStrongSelf;
+                         ESStrong_(_saveButton);
 
-                         if (error) {
-                             [SVProgressHUD showErrorWithStatus:error.localizedDescription];
-                         } else {
-                             [SVProgressHUD dismiss];
+                         dispatch_async(dispatch_get_main_queue(), ^{
+                                            _saveButton.enabled = YES;
 
-                             if (isVideo) {
-                                 NSString *fileName = [NSString stringWithFormat:@"%@.mp4", self.generateFileName];
-                                 NSString *videoPath = [NSTemporaryDirectory() stringByAppendingPathComponent:fileName];
-                                 [data writeToFile:videoPath atomically:YES];
-                                 [_self saveVideoFromPath:videoPath];
-                             } else {
-                                 UIImage *image = [UIImage imageWithData:data];
-                                 [_self saveImageFromImage:image];
-                             }
-                         }
+                                            if (error) {
+                                                [_self.superview makeToast:error.localizedDescription];
+                                            } else {
+                                                if (isVideo) {
+                                                    NSString *fileName = [NSString stringWithFormat:@"%@.mp4", self.generateFileName];
+                                                    NSString *videoPath = [NSTemporaryDirectory() stringByAppendingPathComponent:fileName];
+                                                    [data writeToFile:videoPath atomically:YES];
+                                                    [_self saveVideoFromPath:videoPath];
+                                                } else {
+                                                    UIImage *image = [UIImage imageWithData:data];
+                                                    [_self saveImageFromImage:image];
+                                                }
+                                            }
+                                        });
                      }];
 
     [_downloadTask resume];
@@ -138,35 +144,51 @@
 /// <#Description#>
 /// - Parameter image: <#image description#>
 - (void)saveImageFromImage:(UIImage *)image {
+    ESWeakSelf;
     [[PHPhotoLibrary sharedPhotoLibrary] performChanges:^{
          [PHAssetChangeRequest creationRequestForAssetFromImage:image];
      } completionHandler:^(BOOL success, NSError *_Nullable error) {
+         ESStrongSelf;
+         NSString *message;
+
          if (success) {
-             [SVProgressHUD showSuccessWithStatus:@"保存成功"];
+             message = @"保存成功";
          } else {
-             [SVProgressHUD showErrorWithStatus:error.localizedDescription];
+             message = error.localizedDescription;
          }
+
+         dispatch_async(dispatch_get_main_queue(), ^{
+                            [_self.superview makeToast:message];
+                        });
      }];
 }
 
 /// <#Description#>
 /// - Parameter videoPath: <#videoPath description#>
 - (void)saveVideoFromPath:(NSString *)videoPath {
+    ESWeakSelf;
     [[PHPhotoLibrary sharedPhotoLibrary] performChanges:^{
          NSURL *videoURL = [NSURL fileURLWithPath:videoPath];
          [PHAssetChangeRequest creationRequestForAssetFromVideoAtFileURL:videoURL];
      } completionHandler:^(BOOL success, NSError *_Nullable error) {
+         ESStrongSelf;
+         NSString *message;
+
          if (success) {
-             [SVProgressHUD showSuccessWithStatus:@"保存成功"];
+             message = @"保存成功";
          } else {
-             [SVProgressHUD showErrorWithStatus:error.localizedDescription];
+             message = error.localizedDescription;
          }
 
          NSError *removeError = nil;
          [[NSFileManager defaultManager] removeItemAtPath:videoPath error:&removeError];
          if (removeError) {
-             [SVProgressHUD showErrorWithStatus:error.localizedDescription];
+             message = error.localizedDescription;
          }
+
+         dispatch_async(dispatch_get_main_queue(), ^{
+                            [_self.superview makeToast:message];
+                        });
      }];
 }
 
