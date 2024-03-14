@@ -436,6 +436,11 @@
                      completion:^(BOOL finished) {
                          [self.view removeFromSuperview];
                          
+                         if (self.toolbar.downloadTask && (self.toolbar.downloadTask.state == NSURLSessionTaskStateRunning ||
+                                                           self.toolbar.downloadTask.state == NSURLSessionTaskStateSuspended)) {
+                             [self.toolbar.downloadTask cancel];
+                         }
+        
                          if (self.dismiss) {
                              self.dismiss();
                          }
