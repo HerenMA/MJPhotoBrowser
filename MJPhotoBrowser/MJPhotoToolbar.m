@@ -44,6 +44,7 @@
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
+        [SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeClear];
     }
     return self;
 }
